@@ -1,0 +1,16 @@
+## Fourth graphic plot4.png
+
+file_consumption <- file("household_power_consumption.txt")
+data_consumption = read.table(text = grep("^[1,2]/2/2007", readLines(file_consumption), value = TRUE),header = TRUE, sep = ";", col.names = c("Date", "Time", "Active Power", "Reactive Power", "Voltage", "Intensity", "Sub1", "Sub2", "Sub3"))
+dates <- strptime(paste(data_consumption$Date, data_consumption$Time), "%d/%m/%Y %H:%M") 
+png(filename = "plot4.png", width = 480, height = 480, units = "px")
+par(mar = c(4,4,2,2))
+par(mfrow=c(2,2))
+plot(dates, data_consumption$Active.Power, xlab = '', ylab = "Global Active Power (kilowatts)", type = 'l')
+plot(dates, data_consumption$Voltage, xlab = "datetime", ylab = "Voltage", type = 'l')
+plot(dates, data_consumption$Sub1, xlab = '', ylab = "Energy sub metering", type = 'l')
+lines(dates, data_consumption$Sub2, col = "red")
+lines(dates, data_consumption$Sub3, col = "blue")
+legend("topright", c("Sub_metering_1","Sub_metering_2","Sub_metering_3"), bty="n", lty = 'solid', col=c("black","red","blue"), y.intersp = 0.5)
+plot(dates, data_consumption$Reactive.Power, xlab = "datetime", ylab = "Global_reactive_power", type = 'l')
+dev.off()
